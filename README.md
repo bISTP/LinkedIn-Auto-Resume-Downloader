@@ -1,9 +1,12 @@
 # Linkedin-Auto-Resume-Downloader
 
-This program automatically downloads the resume of candidates who applied to a specific job position posted by the recruiter on Linkedin using GmailAPI.
+This program automatically downloads the resume of candidates who applied to a specific job position posted by the recruiter on Linkedin using **GmailAPI**.
+
 It downloads the Resumes and save them in different folder, job post wise, in case of multiple job postings by same recruiter.
-It also maintains an Excel File Record for all the Resumes Downloaded.
+
+It also maintains an Excel File Record for all the Resumes Downloaded.<br>
 *I didn't encapsulated the code inside functions but if anyone wants it, Let me know.*
+
 Note: Linkedin might change its format, so if this doesn't work, let me know.
 
 # Requirements
