@@ -19,20 +19,24 @@ Note: Linkedin might change its format, so if this doesn't work, let me know.
  * Copy this [Colab File](https://colab.research.google.com/drive/14jm44-I8FlYbiafMlSdWVuXzAgA18Tzz?usp=sharing) into your drive.
  * Then just run all.
  * The Directory Should Look like this:
+ ```bash
   .
   └── Linkedin/
       ├── client_secret.json
       └── Google.py
+ ```
 
  ## 2. Using Local Machine
  * Just put Linkedin.py, client_secret.json and Google.py inside any folder.
  * Install the packages from requirements.txt or just `pip install -r requirements.txt`
  * Run Linkedion.py
 * The Directory Should Look like this:
+ ```bash
   .
   ├── client_secret.json
   ├── Google.py
   └── Linkedin.py
+ ```
  
  # How it Works:
  * It will ask for authorization only the first time, A browser tab will be opened so make sure you are logged in with your main google account.
