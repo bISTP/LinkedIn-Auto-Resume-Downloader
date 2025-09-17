@@ -1,54 +1,88 @@
-# Linkedin-Auto-Resume-Downloader
+---
 
-This program automatically downloads the resume of candidates who applied to a specific job position posted by the recruiter on Linkedin using **GmailAPI**.
+# LinkedIn Auto Resume Downloader
 
-It downloads the Resumes and save them in different folder, job post wise, in case of multiple job postings by same recruiter.
+This program automates the process of downloading applicant resumes from LinkedIn job application notification emails via the **Gmail API**. It's designed for recruiters who receive email notifications from LinkedIn when candidates apply.
 
-It also maintains an Excel File Record for all the Resumes Downloaded.<br>
-*I didn't encapsulated the code inside functions but if anyone wants it, Let me know.*
+It intelligently organizes downloaded resumes into separate folders based on the specific job posting, making it easier to manage applications for multiple roles. Additionally, it maintains an Excel file (`log.xlsx`) as a comprehensive record of all downloaded resumes, including details like the email's reception date and the associated job post.
 
-Note: Linkedin might change its format, so if this doesn't work, let me know.
+## Features
 
-# Requirements
-* You need to make sure that as a recruiter, you are getting mail from Linkedin every time someone applies for a job post.
-* Enable GmailAPI from Google Developer Console using the same account you are recieving mail from Linkedin.
-* Generate OAuth2 Credentials File and Rename it as clients_secret.json
+*   **Automated Resume Download:** Fetches resumes directly from LinkedIn application emails.
+*   **Job-Specific Folder Organization:** Sorts and saves resumes into dedicated folders for each job posting (e.g., `Downloaded_Resumes/Software_Engineer`).
+*   **Download Log:** Maintains an `log.xlsx` file with a record of every downloaded resume.
+*   **Resume from Last Run:** Can automatically pick up from the last download session to ensure no resumes are missed.
+*   **Customizable Date Range:** Allows specifying a start and end date/time for resume retrieval.
+*   **Robust Error Handling:** Designed to gracefully handle API errors, network issues, and variations in email formats.
 
+## Requirements
 
- # Usage: There are two ways you can run this program:
- ## 1. Google Colab (Cloud):
- * Just create a Folder Named **Linkedin** inside the root directory of Google Drive.
- * Put client_secret.json and Google.py inside that folder.
- * Copy this [Colab File](https://colab.research.google.com/drive/14jm44-I8FlYbiafMlSdWVuXzAgA18Tzz?usp=sharing) into your drive.
- * Then just run all.
- * The Directory Should Look like this:
- ```bash
-  .
-  └── Linkedin/
-      ├── client_secret.json
-      └── Google.py
- ```
+Before you begin, ensure you have the following:
 
- ## 2. Using Local Machine
- * Just put Linkedin.py, client_secret.json and Google.py inside any folder.
- * Install the packages from requirements.txt or just `pip install -r requirements.txt`
- * Run Linkedion.py
-* The Directory Should Look like this:
- ```bash
-  .
-  ├── client_secret.json
-  ├── Google.py
-  └── Linkedin.py
- ```
- 
- # How it Works:
- * It will ask for authorization only the first time, A browser tab will be opened so make sure you are logged in with your main google account.
- * It has Two Inputs: Start Date and End Date. They both defines the time window for which you want to download the Resumes.
- * The format is "dd mm yyyy hh". For Example: 10 10 2022 14 means 10th October 2022 2PM.
- * If Start Date left empty, It will pick up the last date time you ran this program to ensure the continuity.
- * If End Date left empty, It will just take current date time.
- * The time zone used is 'Asia/Kolkata', you can replace it to your timezone by searching and replacing the string.
- * Note: There is a simpler inbuilt date filter in api request which can be given directly in the query but it is not precised to the "HOUR" like the one I used here. (if you need it, let me know)
- * Resumes are going to be downloaded inside Downloaded_Files Folder, separted by different sub folders based on the Job Post.
- * An excel file will be generated named *log.xlsx* which will keep all the records about the downloaded resumes.
- 
+1.  **Python 3.x:** Installed on your local machine.
+2.  **LinkedIn Email Notifications:** As a recruiter, you must be receiving email notifications from `jobs-listings@linkedin.com` every time someone applies to a job post.
+3.  **Google Cloud Project & Gmail API:**
+    *   Create a project in the [Google Cloud Console](https://console.cloud.google.com/).
+    *   Enable the **Gmail API** for your project.
+    *   Create **OAuth 2.0 Client IDs** credentials (select "Desktop app" as the application type) and download the `client_secret.json` file. Rename it if necessary, but keep it as `client_secret.json`. This file must be placed in the root directory of your project.
+
+## Installation
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com/your-username/linkedin-auto-resume-downloader.git # Replace with your repo URL
+    cd linkedin-auto-resume-downloader
+    ```
+2.  **Place `client_secret.json`:**
+    Move the `client_secret.json` file you downloaded from Google Cloud Console into the root of this project directory.
+3.  **Install Dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## Usage
+
+1.  **Run the Script:**
+    ```bash
+    python linkedin_downloader.py
+    ```
+
+2.  **Initial Authorization:**
+    *   The first time you run the script, a browser window will open, prompting you to authorize the application to access your Gmail account. Make sure you are logged in with the Google account that receives LinkedIn job application emails.
+    *   Upon successful authorization, a `token.pickle` file will be created in your project directory. This file stores your credentials securely for future runs, so you won't need to re-authorize unless the token expires or is revoked.
+
+3.  **Input Date Range:**
+    *   The script will then ask for a **Start Date** and **End Date** in the format `dd mm yyyy hh` (e.g., `01 01 2023 00` for January 1st, 2023, 12 AM).
+    *   **Start Date:**
+        *   If left empty, the script will automatically use the end date of its previous successful run (stored in `info.txt`) to ensure continuity.
+        *   If no `info.txt` exists or is empty, you *must* provide a start date.
+    *   **End Date:**
+        *   If left empty, the script will default to the current date and time.
+    *   **Timezone:** The script uses `Asia/Kolkata` as the default timezone. You can easily change this by modifying the `TIMEZONE` constant at the top of the `linkedin_downloader.py` file to your desired timezone (e.g., `America/New_York`).
+
+4.  **Download Process:**
+    *   The script will fetch LinkedIn job application emails within the specified date range.
+    *   Resumes will be downloaded into the `Downloaded_Resumes` folder, organized into subfolders named after the job postings.
+    *   A `log.xlsx` file will be created or updated with details of each downloaded resume.
+
+## Project Structure
+
+After running the script, your project directory will look similar to this:
+
+```
+.
+├── client_secret.json        # Your Google OAuth 2.0 credentials
+├── linkedin_downloader.py    # The main script
+├── requirements.txt          # Python dependencies
+├── README.md                 # This file
+├── log.xlsx                  # Record of downloaded resumes (generated by script)
+├── info.txt                  # Stores the date of the last successful run (generated by script)
+├── token.pickle              # Stores your Google API authentication token (generated by script)
+└── Downloaded_Resumes/       # Directory where all resumes are saved (generated by script)
+    ├── Job_Title_A/          # Subfolder for Job Title A
+    │   └── John_Doe_Resume.pdf
+    │   └── Jane_Smith_Resume.doc
+    └── Software_Engineer_Role/ # Subfolder for Software Engineer Role
+        └── Applicant_Name_CV.pdf
+        └── Another_Resume.docx
+```
