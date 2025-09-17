@@ -1,7 +1,9 @@
-wget
-pandas
-pytz
-bs4
 google-api-python-client
-google-auth-httplib2
 google-auth-oauthlib
+google-auth-httplib2
+requests
+pandas
+openpyxl
+beautifulsoup4
+python-dateutil
+pytz
